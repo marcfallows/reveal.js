@@ -1,0 +1,100 @@
+/**
+ * blinkbox theme for reveal.js.
+ *
+ * Copyright (C) 2014 Marc Fallows
+ */
+
+
+// Default mixins and settings -----------------
+@import "../template/mixins";
+@import "../template/settings";
+// ---------------------------------------------
+
+
+
+// Include theme-specific fonts
+@font-face {
+	font-family: 'FS Lola';
+	src: url('../../lib/font/fs_lola_regular-webfont.eot');
+	src: url('../../lib/font/fs_lola_regular-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('../../lib/font/fs_lola_regular-webfont.woff') format('woff'),
+		 url('../../lib/font/fs_lola_regular-webfont.ttf') format('truetype'),
+		 url('../../lib/font/fs_lola_regular-webfont.svg#FSLolaRegular') format('svg');
+
+	font-weight: normal;
+	font-style: normal;
+}
+
+// Override theme settings (see ../template/settings.scss)
+$mainFont: 'FS Lola';
+$mainFontSize: 40px;
+
+$backgroundColor: #00A4E0;
+$headingFont: 'FS Lola';
+$headingTextTransform: none;
+$headingTextShadow: none;
+$headingColor: #fff;
+$heading1TextShadow: $headingTextShadow;
+
+$linkColor: rgba( 255, 255, 255, 0.7);
+$linkColorHover: rgba( 255, 255, 255, 1);
+
+
+// Theme template ------------------------------
+@import "../template/theme";
+// ---------------------------------------------
+
+.reveal {
+
+  ul {
+    margin: 20px 0;
+  }
+
+  table{
+    margin: auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 0.8em;
+    line-height: 1.2em;
+  }
+
+  table th{
+    text-shadow: rgb(255,255,255) 1px 1px 2px;
+    font-weight: bold;
+  }
+
+  table th,
+  table td,
+  table tr.fragment.visible th,
+  table tr.fragment.visible td {
+    text-align: left;
+    padding: 0.2em 0.4em;
+    border-bottom: 1px solid;
+    border-left: 1px solid;
+  }
+
+  table tr td:last-child,
+  table tr.fragment.visible td:last-child {
+    border-right: 1px solid;
+  }
+
+  table tr:first-child td,
+  table tr.fragment.visible:first-child td {
+    border-top: 1px solid;
+  }
+
+  table tr.fragment td {
+    border: 0;
+  }
+
+  .footer {
+    background: url('../../lib/img/blinkbox-logo.png') no-repeat left bottom;
+    background-size: contain;
+    position: fixed;
+    width: 10%;
+    height: 10%;
+    z-index: 30;
+    left: 50px;
+    bottom: 50px;
+  }
+}
