@@ -44,13 +44,465 @@
 			<div class="slides">
 
                 <section>
-                    <h1>First Slide</h1>
-                    <h3>Slide one</h3>
+                    <h1>AngularJS ngAnimate</h1>
+                    <h3>An Intro</h3>
+                    <div class="angular-logo"></div>
+                    <p>Marc Fallows</p>
+
+                    <aside class="notes">Hopefully slides are in the right order. Circular knowledge.</aside>
                 </section>
 
                 <section>
-                    <h1>Next Slide</h1>
-                    <h3>Another slide</h3>
+                    <h2>ngAnimate in 1.2+</h2>
+                    <p>Using 1.2.19 (latest stable) as of writing these slides.</p>
+                    <ul>
+                        <li>ngAnimate was introduced in 1.1.5
+                            <ul>
+                                <li>Completely refactored for 1.2</li>
+                                <li>Beware of old examples!</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <aside class="notes">Actually 1.2.20 now. And yes, an ngAnimate change was included.</aside>
+                </section>
+
+                <section>
+                    <h2>Not core</h2></h2>
+                    <p>It is a separate module.</p>
+                    <pre><code data-trim contenteditable>
+&lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;angular-animate.js&quot;&gt;&lt;/script&gt;
+                    </code></pre>
+
+                    <pre><code data-trim contenteditable="">
+var app = angular.module('app', ['ngAnimate']);
+                    </code></pre>
+
+                    <aside class="notes">Easy to forget</aside>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Class Based</h2>
+                        <ul>
+                            <li>Animations are based on css classes being added/removed (ngClass)</li>
+                            <li>Directive implementations add/remove classes as well</li>
+                            <li>Makes it very easy to integrate 3rd party libraries (<a href="http://daneden.github.io/animate.css/" target="_blank">animate.css</a>)</li>
+                        </ul>
+                        <aside class="notes">Slides below!!</aside>
+                    </section>
+                    <section id="animate-example">
+                        <h2>Example</h2>
+                        <iframe style="width: 100%; background: #fff; height: 500px;" src="http://embed.plnkr.co/Lxq55tJSo2kPKNCveiTl/preview"></iframe>
+                        <aside class="notes">Don't use ngInit and ng-app="ngAnimate" in practice, but a quick way to get an example setup</aside>
+                    </section>
+                </section>
+
+                <section>
+                    <h2>No unnecessary DOM manipulation</h2>
+                    <p>Classes only added if:</p>
+                    <ul>
+                        <li>ngAnimate module included</li>
+                        <li>Transitions/animations exists in css (scans element)</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Used in Angular directives</h2>
+                    <table>
+                        <tr>
+                            <td>ngRepeat</td>
+                            <td>enter/leave/move</td>
+                        </tr>
+                        <tr>
+                            <td>ngView</td>
+                            <td>enter/leave</td>
+                        </tr>
+                        <tr>
+                            <td>ngInclude</td>
+                            <td>enter/leave</td>
+                        </tr>
+                        <tr>
+                            <td>ngSwitch</td>
+                            <td>enter/leave</td>
+                        </tr>
+                        <tr>
+                            <td>ngIf</td>
+                            <td>enter/leave</td>
+                        </tr>
+                        <tr>
+                            <td>ngClass</td>
+                            <td>add/remove (+expressions)</td>
+                        </tr>
+                        <tr>
+                            <td>ngShow/ngHide</td>
+                            <td>add/remove ("ng-hide" class)</td>
+                        </tr>
+                        <tr>
+                            <td>form</td>
+                            <td>add/remove (dirty/pristine/valid/invalid)</td>
+                        </tr>
+                        <tr>
+                            <td>ngModel</td>
+                            <td>add/remove (dirty/pristine/valid/invalid)</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h2>Steps</h2>
+                    <table>
+                        <tr class="fragment">
+                            <td>$animate.enter(...) is called</td>
+                            <td>class="foo"</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>element is inserted</td>
+                            <td>class="foo"</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>$animate runs any JS animations</td>
+                            <td>class="foo ng-animate"</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>the .ng-enter class is added</td>
+                            <td>class="foo ng-animate ng-enter"</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>$animate scans the element styles</td>
+                            <td>class="foo ng-animate ng-enter"</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>$animate waits for 10ms (reflow)</td>
+                            <td>class="foo ng-animate ng-enter"</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>the active classes are added (triggers the CSS transition/animation)</td>
+                            <td>class="foo ng-animate ng-animate-active ng-enter ng-enter-active"</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>$animate waits for X milliseconds for the animation to complete</td>
+                            <td>class="foo ng-animate ng-animate-active ng-enter ng-enter-active"</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>The animation ends (classes removed)</td>
+                            <td>class="foo"</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>Call doneCallback()</td>
+                            <td>class="foo"</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <aside class="notes">Steps account for JS animations too.</aside>
+                </section>
+
+                <section>
+                    <h2>Example</h2>
+                    <iframe style="width: 100%; background: #fff; height: 500px;" src="http://embed.plnkr.co/s1ibKWnX7iZV0PDyNwj4/preview"></iframe>
+                    <aside class="notes">Example has ngAnimate disabled. Walk through the code and then enable animations. Open in a Plunker.</aside>
+                </section>
+
+                <section>
+                    <h2>Cloning</h2>
+                    <p>ngView/ngInclude are cloned (like ngRepeat)</p>
+                    <ul>
+                        <li>Allows cross-fading of views</li>
+                        <li>Remember to position absolutely</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Things to know</h2>
+                    <ul>
+                        <li>Keyframe animations are supported</li>
+                        <ul>
+                            <li>no need for -active class since animation is handled within @keyframes block</li>
+                        </ul>
+                        <li>Pays attention to transition-delay, animation-delay and animation-iteration-count</li>
+                        <li>Structural animations don't occur on bootstrap (remember <a href="#/animate-example">this example</a>?)</li>
+                    </ul>
+                    <aside class="notes">Not sure I agree with the structural animations change, but I get why. Remember the structural animations example.</aside>
+
+                </section>
+
+                <section>
+                    <h2>Javascript</h2>
+                    <ul>
+                        <li>Still class based</li>
+                        <li>Remember the dot '.' ('.foo')</li>
+                        <li>Call done()!</li>
+                    </ul>
+                    <pre><code data-trim contenteditable>
+myApp.animation('.foo', function() {
+  return {
+    enter : function(element, done) {
+      jQuery(element).css({
+        color:'#FF0000'
+      });
+
+      jQuery(element).animate({
+        color:'#0000FF'
+      }, done);
+
+      return function(cancelled) {
+        if(cancelled) {
+          jQuery(element).stop();
+        }
+      }
+    },
+
+    leave : function(element, done) { done(); },
+    move : function(element, done) { done(); },
+
+    beforeAddClass : function(element, className, done) { done(); },
+    addClass : function(element, className, done) { done(); },
+
+    beforeRemoveClass : function(element, className, done) { done(); },
+    removeClass : function(element, className, done) { done(); },
+
+    allowCancel : function(element, event, className) {}
+  };
+});
+                    </code></pre>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Adding animations to custom directives</h2>
+                        <p>$animate service</p>
+                        <ul>
+                            <li>addClass</li>
+                            <li>removeClass</li>
+                            <li>enter</li>
+                            <li>leave</li>
+                            <li>move</li>
+                        </ul>
+                        <aside class="notes">Slides below!!</aside>
+                    </section>
+
+                    <section>
+                        <h3>Example: Directive</h3>
+                        <pre><code data-trim contenteditable>
+var app = angular.module("app", ["ngAnimate"])
+  .directive('clicker', function($animate) {
+      return function(scope, element) {
+          var add, clickedClass = 'clicker';
+
+          element.bind('click', function() {
+
+            if(add = !add){
+              $animate.addClass(element, clickedClass);
+            } else {
+              $animate.removeClass(element, clickedClass);
+            }
+          });
+      };
+  });
+                        </code></pre>
+                        <aside class="notes">Ok, we could do this with ngClass easily, but works as a simple example.</aside>
+                    </section>
+
+                    <section>
+                        <h3>Example: CSS</h3>
+                        <pre><code data-trim contenteditable>
+.item.clicker {
+  background: rgba(0,0,0,0);
+}
+
+.item.clicker.clicker-add {
+  background: rgba(0,0,0,1);
+  -webkit-animation: bounceOut 1s;
+}
+
+.item.clicker-remove {
+  -webkit-animation: bounceIn 1s;
+}
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h3>Example: In Action</h3>
+                        <iframe style="width: 100%; background: #fff; height: 300px;" src="http://embed.plnkr.co/zsMMQRSBqBl8eNvhFcJp/preview"></iframe>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Enabling/Disabling</h2>
+                        <ul>
+                            <li>$animate.enabled(false);</li>
+                            <li>ngClass falsy</li>
+                            <ul>
+                                <li>Class on body tag</li>
+                            </ul>
+                            <li>Remove stylesheet / media queries</li>
+                        </ul>
+                        <aside class="notes">Slides below!!</aside>
+                    </section>
+
+                    <section>
+                        <pre><code data-trim contenteditable>
+&lt;html ng-app=&quot;app&quot;&gt;
+    &lt;body ng-class=&quot;{animate: isAnimationEnabled}&quot; ng-controller=&quot;MainCtrl&quot;&gt;
+        &lt;div class=&quot;some-element&quot; ng-hide=&quot;hideIt&quot;&gt;
+            ...
+        &lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+                        </code></pre>
+                        <pre><code data-trim contenteditable>
+body.animate .some-element.ng-hide-add {
+    /* styles */
+}
+body.animate .some-element.ng-hide-add-active {
+    /* styles */
+}
+                        </code></pre>
+                        <aside class="notes">Won't show it when there's no .animate class.</aside>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Testing</h2>
+                        <h3>Given we have an animation:</h3>
+                        <pre><code data-trim contenteditable>
+var app = angular.module('app', ['ngAnimate'])
+  .animation('.enter-in', function() {
+    return {
+      enter : function(element, done) {
+        element.css('opacity', 0);
+        jQuery(element).animate({
+          opacity: 1
+        }, 2000, done);
+      }
+    }
+  });
+                        </code></pre>
+                        <aside class="notes">Slides below!!</aside>
+                    </section>
+
+                    <section>
+                        <h3>Synchronous</h3>
+                        <ul>
+                            <li>ngAnimateMock module</li>
+                            <li>Check $animate service is adding element</li>
+                        </ul>
+                        <pre><code data-trim contenteditable>
+describe('Testing Sync Animations', function() {
+
+  beforeEach(module('app'));
+  beforeEach(module('ngAnimateMock'));
+
+  it("should synchronously test the animation",
+    inject(function($animate, $document, $rootElement, $rootScope, $compile) {
+
+    // Structural animations don't animate on bootstrap, so fake a digest.
+    $rootScope.$digest();
+
+    var element = $compile('<div class="enter-in"><h1>Hello</h1></div>')($rootScope);
+    $rootElement.append(element);
+    angular.element($document[0].body).prepend($rootElement);
+
+    $animate.enter(element, $rootElement);
+    $rootScope.$digest();
+
+    expect($animate.queue.length).toBe(1);
+    var item = $animate.queue.shift();
+    expect(item.event).toBe('enter');
+    expect(item.element).toEqual(element);
+
+    expect($animate.queue.length).toBe(0);
+
+  }));
+});
+
+                        </code></pre>
+                        <a href="http://plnkr.co/edit/E4CAlbYxZcQC9vsOrSGO?p=preview" target="_blank">Plunker</a>
+                        <aside class="notes">Just checking the queue, is that really useful?</aside>
+                    </section>
+
+                    <section>
+                        <h3>Asynchronous</h3>
+                        <ul>
+                            <li>Use timeout/callback to check the state of the element</li>
+                            <li>This is probably BAD, slow tests!</li>
+                        </ul>
+                        <pre><code data-trim contenteditable>
+describe('Testing Async Animations', function() {
+
+  beforeEach(module('app'));
+  beforeEach(module('ngAnimateMock'));
+
+  it("should asynchronously test the animation", function(done) {
+    inject(function($animate, $document, $compile, $rootElement, $rootScope) {
+
+      // Structural animations don't animate on bootstrap, so fake a digest.
+      $rootScope.$digest();
+
+      var element = $compile('<div class="enter-in"><h1>Hello</h1></div>')($rootScope);
+      $rootElement.append(element);
+      angular.element($document[0].body).prepend($rootElement);
+
+      $animate.enter(element, $rootElement, null, function() {
+        expect(element.css('opacity')).toEqual(0);
+        done();
+      });
+      $rootScope.$digest();
+    });
+  });
+});
+
+                        </code></pre>
+                        <a href="http://plnkr.co/edit/gTZ4w9AgeNtyNndGc2zt?p=preview" target="_blank">Plunker</a>
+                        <aside class="notes">Waiting for the animation to complete. That doesn't seem great either...</aside>
+                    </section>
+                </section>
+
+                <section>
+                    <h2>Awesome! Right?!</h2>
+                    <h3 class="fragment">Maybe</h3>
+                    <ul>
+                        <li class="fragment">The Good
+                            <ul>
+                                <li>Cheap animations</li>
+                                <li>Built by the AngularJS team</li>
+                                <li>Used by core ng directives</li>
+                            </ul>
+                        </li>
+                        <li class="fragment">The Bad
+                            <ul>
+                                <li>Bugs/unstable (20+ confirmed ngAnimate issues)</li>
+                                <li>Evolving (bug fixes / features / breaking changes)</li>
+                                <li>Class based - sometimes feel forced/limiting</li>
+                                <li>Difficult to test</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <aside class="notes">Even though it's not part of the core, angular.js is littered with $animate service calls.</aside>
+                </section>
+
+                <section>
+                    <h2>References:</h2>
+                    <ul>
+                        <li><a href="http://www.yearofmoo.com/2013/08/remastered-animation-in-angularjs-1-2.html" target="_blank">Year of Moo - Remastered Animation in AngularJS 1.2</a>
+                            <ul>
+                                <li>@matsko</li>
+                            </ul>
+                        </li>
+                        <li><a href="https://docs.angularjs.org/guide/animations" target="_blank">AngularJS Animations Docs</a>
+                            <ul>
+                                <li>Get the AngularJS version right!</li>
+                            </ul>
+                        </li>
+                        <li>Read the source (or try to)</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <img src="lib/img/fin.jpg" />
                 </section>
 
 			</div>
@@ -67,7 +519,7 @@
 			// https://github.com/hakimel/reveal.js#configuration
 			Reveal.initialize({
 				history: true,
-				transition: 'linear',
+				//transition: 'linear',
 
                 // Optional libraries used to extend on reveal.js
                 dependencies: [

@@ -47,7 +47,7 @@ $linkColorHover: rgba( 255, 255, 255, 1);
 .reveal {
 
   ul {
-    margin: 20px 0;
+    margin: 15px 0;
   }
 
   table{
@@ -87,6 +87,21 @@ $linkColorHover: rgba( 255, 255, 255, 1);
     border: 0;
   }
 
+  .slides {
+    .angular-logo{
+      background: url('../../lib/img/angularjs-logo.png') no-repeat center center;
+      background-size: contain;
+      height: 200px;
+      margin: 20px 0;
+
+      -webkit-backface-visibility: visible !important;
+      -webkit-animation-name: flipAround;
+      -webkit-animation-duration: 5s;
+      -webkit-animation-iteration-count: infinite;
+      -webkit-animation-timing-function: linear;
+    }
+  }
+
   .footer {
     background: url('../../lib/img/blinkbox-logo.png') no-repeat left bottom;
     background-size: contain;
@@ -96,5 +111,15 @@ $linkColorHover: rgba( 255, 255, 255, 1);
     z-index: 30;
     left: 50px;
     bottom: 50px;
+  }
+}
+
+@-webkit-keyframes flipAround {
+  0% {
+    -webkit-transform: rotate3d(0, 1, 0, 90deg);
+  }
+
+  100% {
+    -webkit-transform: rotate3d(0, 1, 0, 270deg);
   }
 }
