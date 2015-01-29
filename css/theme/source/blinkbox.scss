@@ -1,0 +1,50 @@
+/**
+ * blinkbox theme for reveal.js.
+ *
+ * Copyright (C) 2014-2015 Marc Fallows
+ */
+
+
+// Default mixins and settings -----------------
+@import "../template/mixins";
+@import "../template/settings";
+// ---------------------------------------------
+
+
+// Include theme-specific fonts
+@import url(../../lib/font/fs-lola/fs-lola.css);
+
+
+// Override theme settings (see ../template/settings.scss)
+$backgroundColor: #0E213A;
+$mainFontSize: 30px;
+
+$mainFont: 'FS Lola', Helvetica, sans-serif;
+$headingFont: 'FS Lola', Helvetica, sans-serif;
+$headingTextTransform: none;
+$linkColor: #009acb;
+$linkColorHover: lighten( $linkColor, 15% );
+$selectionBackgroundColor: lighten( $linkColor, 25% );
+
+// Background generator
+@mixin bodyBackground() {
+  @include radial-gradient( rgba(14,33,58,1), rgba(20,69,100,1) );
+}
+
+// Theme template ------------------------------
+@import "../template/theme";
+// ---------------------------------------------
+
+.reveal .footer {
+	background: url('../../lib/img/blinkbox-logo.png') no-repeat left bottom;
+	background-size: contain;
+
+	position: fixed;
+	width: 10%;
+	height: 10%;
+	z-index: 30;
+	left: 3%;
+	bottom: 3%;
+
+	-webkit-user-select: none;
+}

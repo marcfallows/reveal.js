@@ -433,6 +433,9 @@
 		dom.progress = createSingletonNode( dom.wrapper, 'div', 'progress', '<span></span>' );
 		dom.progressbar = dom.progress.querySelector( 'span' );
 
+		// Footer
+		createSingletonNode( dom.wrapper, 'aside', 'footer', '<span></span>' );
+
 		// Arrow controls
 		createSingletonNode( dom.wrapper, 'aside', 'controls',
 			'<div class="navigate-left"></div>' +
