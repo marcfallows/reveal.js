@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>blinkbox | Presentation</title>
+		<title>blinkbox | SystemJS</title>
 
 		<meta name="description" content="A blinkbox presentation">
 		<meta name="author" content="Marc Fallows">
@@ -40,13 +40,241 @@
 
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
-				<section>
-					<h1>blinkbox</h1>
-					<h3>Presentation</h3>
-					<p>
-						<small>Created by Marc Fallows / <a href="mailto:marc@blinkbox.com">mailto:marc@blinkbox.com</a></small>
-					</p>
-				</section>
+                <section>
+                    <h1>SystemJS</h1>
+                    <h3>TV v2 Retrospective</h3>
+                    <p>What's changed, gotchas and FAQs</p>
+                    <p>
+                        <small>Created by Marc Fallows / <a href="mailto:marc@blinkbox.com">marc@blinkbox.com</a></small>
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Why?</h2>
+                    <ul>
+                        <li>Avoid complicated requireConfig, dynamic paths</li>
+                        <li>Avoid app redirects and reduce server round trips</li>
+                        <li>Ability to mix and match modules</li>
+                        <ul>
+                            <li>"Universal dynamic module loader"</li>
+                            <li>ES6, AMD, CommonJS, Global Scripts</li>
+                        </ul>
+                        <li>Smarter bundling (System builder)</li>
+                        <li>Dependency cache (DepCache) for faster loading</li>
+                        <li>JSPM?</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Client side detection</h2>
+                        <ul>
+                            <li>Happens in identify.js (formerly userAgentOverride.js)</li>
+                            <li>Stored in a cookie, associated with an app version</li>
+                            <li>Allows all UI Capability settings to work for apps which require client side detection (Chromecast)</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>* Remember *</h2>
+                        <ul>
+                            <li>When developing, you may need to clear the identity cookie if you previously emulated a TV</li>
+                        </ul>
+
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Server-side loader configuration</h2>
+                        <p>Order matters for merging</p>
+                        <ol>
+                            <li>App config</li>
+                            <ol>
+                                <li>Main config</li>
+                                <li>Client device config (highest priority to the most specific)</li>
+                                <li>Server device config (UI Capabilities)</li>
+                                <li>Mock config (in order of how they appear in the query string)</li>
+                            </ol>
+                            <li>Relative config (for a relative URL)</li>
+                            <ul>
+                                <li>Config merged again, same order as app config.
+                            </ul>
+                        </ol>
+
+                    </section>
+
+                    <section>
+                        <h2>* Remember *</h2>
+                        <ul>
+                            <li>Config can influence appSettings</li>
+                            <li>URL used to define relativeUrl and view</li>
+                            <ul>
+                                <li>Beware of not including a trailing slash</li>
+                            </ul>
+                        </ul>
+
+                    </section>
+                </section>
+
+                <section>
+                    <h2>Web.config changes</h2>
+                    <p>New endpoints, locations to search for views and config.</p>
+                    <pre><code data-trim contenteditable>
+<add key="ApplicationSettings.Host.ApiV2" value="api-worldwarz.bbdev1.com"></add>
+<add key="ApplicationSettings.Host.ApiV3" value="data-worldwarz.bbdev1.com"></add>
+<add key="ApplicationSettings.Host.Site" value="tv-worldwarz.bbdev1.com"></add>
+<add key="TVClientUrl" value="/app/{0}/"></add>
+<add key="TVClientDefaultApp" value="stable"></add>
+<add key="TVClientViewIdentify" value="Identify"></add>
+<add key="TVClientViewDefault" value="Index"></add>
+<add key="TVClientLoaderConfig" value="LoaderConfig/config.json"></add>
+<add key="TVClientMockLoaderConfig" value="LoaderConfig/Mock/{0}.json"></add>
+<add key="TVClientDeviceLoaderConfig" value="LoaderConfig/Device/{0}.json"></add>
+                    </code></pre>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>RequireJS vs. SystemJS </h2>
+                        <ul>
+                            <li>SystemJS expects ES6 "System" global</li>
+                            <ul>
+                                <li>Polyfilled by ES6 Module Loader</li>
+                            </ul>
+                            <li>SystemJS wraps globals automagically</li>
+                            <li>SystemJS lets us use CommonJS, ES6 modules on top of AMD</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>* Remember *</h2>
+                        <ul>
+                            <li>Need to list 'require' as a dependency</li>
+
+                            <pre><code data-trim contenteditable>
+define(['require'], function(require){
+    //...
+});
+                            </code></pre>
+                            <li>Uses Traceur if it needs to transpile</li>
+                            <ul>
+                                <li>Traceur isn't currently part of our project!</li>
+                            </ul>
+                        </ul>
+
+                    </section>
+                </section>
+
+                <section>
+                    <h2>Using SystemJS</h2>
+                    <pre><code data-trim contenteditable>
+<script type="text/javascript" src="es6-module-loader.js"></script>
+<script type="text/javascript" src="system.js"></script>
+<script>
+    System.config({
+        //...
+    });
+    System.import('script-to-load');
+</script>
+                    </code></pre>
+                    <p>After that, everything can be AMD Modules</p>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>New alias needed</h2>
+                        <ul>
+                            <li>For SystemJS apps, we go to /v now, not /app</li>
+                            <ul>
+                                <li>https://tv.blinkbox.com/v/latest/</li>
+                                <li>https://tv.blinkbox.com/v/unstable/</li>
+                                <li>https://tv.blinkbox.com/v/2.5.2/</li>
+                            </ul>
+                            <li>Continues to support /app for legacy apps</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>* Remember *</h2>
+                        <ul>
+                            <li>Beware of getting redirected from /v to /app</li>
+                            <ul>
+                                <li>On a legacy branch</li>
+                                <li>The relative view is not found</li>
+                            </ul>
+                            <li>URL will not redirect, uses the loader's baseURL (files are still served at /app/X/)</li>
+                        </ul>
+
+                    </section>
+                </section>
+
+                <section>
+                    <h2>Path lookup keywords</h2>
+                    <ul>
+                        <li>absolute:</li>
+                        <li>relative:</li>
+                        <li>app:</li>
+                        <li>host:</li>
+                        <li>samsungLocalhost:</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Query string "dynamic" configuration</h2>
+                    <ul>
+                        <li>useMock</li>
+                        <li>Can list as many as required (keep in conflicts in mind).</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Direct to API Endpoints</h2>
+                    <p>No TV site proxy</p>
+                </section>
+
+                <section>
+                    <h2>Building/Bundling</h2>
+                    <ul>
+                        <li>No more r.js. Need to use SystemJS builder</li>
+                        <li>Work in progress for TV v2</li>
+                        <li>Can bundle to include SystemJS</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>This is not the ______<br />you are looking for.</h2>
+                    </section>
+
+                    <section>
+                        <h2>This is not the <strong>interface</strong> you are looking for.</h2>
+                        <ul>
+                            <li>avui/tv2</li>
+                            <li>More strictly enforced thanks to the new client-side discovery</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>This is not the <strong>view</strong> you are looking for.</h2>
+                        <ul>
+                            <li>Tried to access /app/X/ and version X expects to be loaded at /v/X</li>
+                            <li>* Probably redirected from /v to /app at some point.</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>This is not the <strong>version (xxx)</strong> you are looking for.</h2>
+                        <ul>
+                            <li>Given a specific version, or a version key (latest, preview, etc) couldn't find the deployment</li>
+                            <li>The app version you are trying to launch probably isn't deployed on that server.</li>
+                        </ul>
+                    </section>
+                </section>
+
+                <section>
+                    <h2>Questions?</h2>
+                </section>
 			</div>
 
 		</div>
