@@ -66,6 +66,17 @@
                 </section>
 
                 <section>
+                    <h2>Page load</h2>
+                    <p>Used to do 3 redirects and a request for settings!</p>
+                    <ul>
+                        <li>"/"</li>
+                        <li>"/app/latest"</li>
+                        <li>"/app/2.5.2"</li>
+                        <li>"deviceSettings"</li>
+                    </ul>
+                </section>
+
+                <section>
                     <section>
                         <h2>Client side detection</h2>
                         <ul>
@@ -118,6 +129,55 @@
                 </section>
 
                 <section>
+                    <section>
+                        <h2>This is not the ______<br />you are looking for.</h2>
+                    </section>
+
+                    <section>
+                        <h2>This is not the <strong>interface</strong> you are looking for.</h2>
+                        <ul>
+                            <li>avui/tv2</li>
+                            <li>More strictly enforced thanks to the new client-side discovery</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>This is not the <strong>view</strong> you are looking for.</h2>
+                        <ul>
+                            <li>Tried to access /app/X/ and version X expects to be loaded at /v/X</li>
+                            <li>* Probably redirected from /v to /app at some point.</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>This is not the <strong>version (xxx)</strong> you are looking for.</h2>
+                        <ul>
+                            <li>Given a specific version, or a version key (latest, preview, etc) couldn't find the deployment</li>
+                            <li>The app version you are trying to launch probably isn't deployed on that server.</li>
+                        </ul>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Direct to API Endpoints</h2>
+                        <p>No TV site proxy</p>
+                    </section>
+
+                    <section>
+                        <h2>Stubs / Mock API</h2>
+                        <ul>
+                            <li>Recorded with "/api/v2" & "/api/v3"</li>
+                            <ul>
+                                <li>Doesn't match new endpoints</li>
+                            </ul>
+                            <li>Test configuration decorates to use "/api/v2" & "/api/v3"</li>
+                            <li>Stub recording needs to continue to use proxy to match</li>
+                        </ul>
+                    </section>
+                </section>
+
+                <section>
                     <h2>Web.config changes</h2>
                     <p>New endpoints, locations to search for views and config.</p>
                     <pre><code data-trim contenteditable>
@@ -144,6 +204,7 @@
                             </ul>
                             <li>SystemJS wraps globals automagically</li>
                             <li>SystemJS lets us use CommonJS, ES6 modules on top of AMD</li>
+                            <li>Slight config differences</li>
                         </ul>
                     </section>
 
@@ -229,47 +290,12 @@ define(['require'], function(require){
                 </section>
 
                 <section>
-                    <h2>Direct to API Endpoints</h2>
-                    <p>No TV site proxy</p>
-                </section>
-
-                <section>
                     <h2>Building/Bundling</h2>
                     <ul>
                         <li>No more r.js. Need to use SystemJS builder</li>
                         <li>Work in progress for TV v2</li>
                         <li>Can bundle to include SystemJS</li>
                     </ul>
-                </section>
-
-                <section>
-                    <section>
-                        <h2>This is not the ______<br />you are looking for.</h2>
-                    </section>
-
-                    <section>
-                        <h2>This is not the <strong>interface</strong> you are looking for.</h2>
-                        <ul>
-                            <li>avui/tv2</li>
-                            <li>More strictly enforced thanks to the new client-side discovery</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h2>This is not the <strong>view</strong> you are looking for.</h2>
-                        <ul>
-                            <li>Tried to access /app/X/ and version X expects to be loaded at /v/X</li>
-                            <li>* Probably redirected from /v to /app at some point.</li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h2>This is not the <strong>version (xxx)</strong> you are looking for.</h2>
-                        <ul>
-                            <li>Given a specific version, or a version key (latest, preview, etc) couldn't find the deployment</li>
-                            <li>The app version you are trying to launch probably isn't deployed on that server.</li>
-                        </ul>
-                    </section>
                 </section>
 
                 <section>
@@ -292,7 +318,7 @@ define(['require'], function(require){
 				history: true,
 				center: true,
 
-				transition: 'slide', // none/fade/slide/convex/concave/zoom
+				transition: 'concave', // none/fade/slide/convex/concave/zoom
 
 				// Optional reveal.js plugins
 				dependencies: [
